@@ -1,19 +1,31 @@
 #pragma once
+#include<iostream>
 #include <curl/curl.h>
 #include <string>
+#include<unordered_map>
 
-namespace lg {
+using namespace std;
+
+struct HttpResp {
+  long code = 0;
+  string body;
+  unordered_map<string, string> headers;
+};
 
 class HttpClient {
   CURL* h_{nullptr};
   struct curl_slist* hdrs_{nullptr};
+
   static size_t sink(char* ptr, size_t sz, size_t nm, void* ud) {
-    auto* s = static_cast<std::string*>(ud);
+    auto* s = static_cast<string*>(ud);
     s->append(ptr, sz * nm);
     return sz * nm;
   }
+
   static long status(CURL* h) {
-    long code = 0; curl_easy_getinfo(h, CURLINFO_RESPONSE_CODE, &code); return code;
+    long code = 0; 
+    curl_easy_getinfo(h, CURLINFO_RESPONSE_CODE, &code); 
+    return code;
   }
 public:
   HttpClient() {
@@ -30,16 +42,17 @@ public:
     if (hdrs_) curl_slist_free_all(hdrs_);
     if (h_) curl_easy_cleanup(h_);
   }
-  bool get(const std::string& url, std::string& out, long& code) {
+  bool get(const string& url, string& out, long& code) {
     out.clear();
     curl_easy_setopt(h_, CURLOPT_URL, url.c_str());
     curl_easy_setopt(h_, CURLOPT_HTTPGET, 1L);
     curl_easy_setopt(h_, CURLOPT_WRITEDATA, &out);
     auto rc = curl_easy_perform(h_); 
     code = status(h_);
+    cout<<out<<endl;
     return rc == CURLE_OK;
   }
-  bool post(const std::string& url, const std::string& body, std::string& out, long& code) {
+  bool post(const string& url, const string& body, string& out, long& code) {
     out.clear();
     curl_easy_setopt(h_, CURLOPT_URL, url.c_str());
     curl_easy_setopt(h_, CURLOPT_POST, 1L);
@@ -50,5 +63,3 @@ public:
     return rc == CURLE_OK;
   }
 };
-
-} // namespace lg

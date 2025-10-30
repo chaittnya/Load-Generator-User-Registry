@@ -1,0 +1,14 @@
+# CPU-bound: token workload (PBKDF2 iterations configurable)
+./build/loadgen/loadgen --base http://localhost:8080 --threads 16 --duration 30 --workload token --token_iterations 700000
+
+# Popular reads (cache-heavy)
+./build/loadgen/loadgen --base http://localhost:8080 --threads 16 --duration 30 --workload get_popular --popular_n 32
+
+# DB-bound: unique reads (auto-seeds ids)
+./build/loadgen/loadgen --base http://localhost:8080 --threads 8 --duration 30 --workload get_all --seed_get_all 2000
+
+# Mixed
+./build/loadgen/loadgen --base http://localhost:8080 --threads 12 --duration 45 --workload get_put --read_ratio 0.6 --seed_get_all 1000
+
+
+sudo apt-get update && sudo apt-get install -y libcurl4-openssl-dev
