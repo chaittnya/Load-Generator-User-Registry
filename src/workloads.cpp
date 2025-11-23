@@ -112,6 +112,7 @@ void worker_get_all(Config &cfg, atomic<bool> &stop, GlobalStats &gs, IdFeeder &
         gs.fromcache.fetch_add(1, std::memory_order_relaxed);
       else if (out.find("\"source\":\"db\"") != std::string::npos)
         gs.fromdb.fetch_add(1, std::memory_order_relaxed);
+    } else {
       gs.fail.fetch_add(1, memory_order_relaxed);
     }
   }
@@ -154,7 +155,7 @@ void worker_get_put(Config &cfg, atomic<bool> &stop, GlobalStats &gs, IdFeeder &
     {
       ostringstream name, mobile, payload;
       name << "mix_" << seq;
-      mobile << "+9166" << (100000 + (seq % 900000));
+      mobile << "66" << (100000 + (seq % 900000));
       payload << "{\"name\":\"" << name.str() << "\",\"mobile\":\"" << mobile.str() << "\"}";
       auto url = url_join(cfg.base, "/users");
 
@@ -187,7 +188,7 @@ void worker_token(Config &cfg, atomic<bool> &stop, GlobalStats &gs, int tid)
     payload << "{\"mobile\":\"99" << tid << (100000 + (seq % 900000)) << "\","
             << "\"iterations\":" << cfg.token_iterations << "}";
 
-    auto url = url_join(cfg.base, "/token");
+    auto url = url_join(cfg.base, "/users/token");
     auto t0 = chrono::high_resolution_clock::now();
     bool ok = c.post(url, payload.str(), out, code);
     auto t1 = chrono::high_resolution_clock::now();

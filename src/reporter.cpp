@@ -24,7 +24,7 @@ void stats_reporter(atomic<bool> &stop, GlobalStats &gs)
 
   while (!stop.load(memory_order_relaxed))
   {
-    this_thread::sleep_for(1s);
+    this_thread::sleep_for(10s);
 
     auto now = clock::now();
     auto cur = snap(gs);
