@@ -138,8 +138,6 @@ int main(int argc, char **argv)
   auto ok = gs.ok.load();
   auto fail = gs.fail.load();
   auto fromdb = gs.fromdb.load();
-  auto fromcache = gs.fromcache.load();
-  auto total_ns = gs.total_ns.load();
   double thr = ok / secs;
   double avg_ms = ok ? (total_ns / 1e6) / ok : 0.0;
 
@@ -164,8 +162,6 @@ int main(int argc, char **argv)
        << "\nDuration (s)     : " << cfg.duration_s
        << "\nSuccess          : " << ok
        << "\nFailures         : " << fail
-       << "\nFetched from DB  : " << fromdb
-       << "\nFetched from Cache: " << fromcache
        << "\nThroughput (req/s): " << thr
        << "\nAvg latency (ms) : " << avg_ms
        << "\n======================\n";
