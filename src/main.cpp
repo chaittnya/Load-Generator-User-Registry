@@ -137,7 +137,7 @@ int main(int argc, char **argv)
   double secs = chrono::duration<double>(end - start).count();
   auto ok = gs.ok.load();
   auto fail = gs.fail.load();
-  auto fromdb = gs.fromdb.load();
+  auto total_ns = gs.total_ns.load();
   double thr = ok / secs;
   double avg_ms = ok ? (total_ns / 1e6) / ok : 0.0;
 
