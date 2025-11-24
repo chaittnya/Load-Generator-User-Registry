@@ -40,9 +40,7 @@ void stats_reporter(atomic<bool> &stop, GlobalStats &gs)
 
     cout.setf(ios::fixed);
     cout.precision(2);
-    cout << "throughput=" << throughput_rps << " req/s, "
-         << "avg=" << avg_ms << " ms, "
-         << "ok=" << d_ok << ", fail=" << d_fail << '\n';
+    cout << "throughput=" << throughput_rps << " req/s, " << "avg=" << avg_ms << " ms, " << "ok=" << d_ok << ", fail=" << d_fail << '\n';
 
     prev = cur;
     prev_t = now;
